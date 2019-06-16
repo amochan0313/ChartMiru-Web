@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chartmiru-web
+spec:
+  volumes:
+  # mount code for dev
+    - name: code-local-volume
+      hostPath:
+        path: /Users/yuichirotakarada/chartmiru/ChartMiru-Web/
+        type: Directory
+
+  containers:
+    - image: asia.gcr.io/chartmiru/chartmiru_web
+      name: web
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: code-local-volume
+          mountPath: /root

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: chartmiru-web
+spec:
+  replicas: 1
+  selector:
+    # このセレクタでPodを選択する
+    matchLabels:
+      # deploymentで指定したラベル
+      web: chartmiru
+  template:
+    metadata:
+      labels:
+        # セレクタと同じ値
+        web: chartmiru
+    spec:
+      containers:
+        - image: asia.gcr.io/chartmiru/chartmiru_web
+          name: web
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+             - name: code-local-volume
+               mountPath: /root
+      volumes:
+        # mount code for dev
+        - name: code-local-volume
+          hostPath:
+            path: /Users/yuichirotakarada/chartmiru/ChartMiru-Web
+            type: Directory
